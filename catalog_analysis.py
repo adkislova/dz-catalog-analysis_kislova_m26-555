@@ -131,4 +131,20 @@ def format_report_line(movie):
 
     return f"{"'"}{'"'}{title}{'"'} {"("}{movie["year"]}{")"} {"-"} {movie["rating"]}{"/10, "} {minutes}, {"жанры: "} {genres}{"'"}"
 
-print(format_report_line(movies[7]))
+
+def titles_sorted_by_rating(movies):
+    '''Возвращает список названий фильмов, отсортированных по убыванию рейтинга'''
+    sorted_movies =sorted(movies , key= lambda movie: movie["rating"], reverse=True)
+    return [movie["title"] for movie in sorted_movies]
+
+
+def top_n_by_rating(movies, n=3):
+    '''Список из n кортежей (title, rating) — топ по рейтингу'''
+    sorted_movies =sorted(movies , key= lambda movie: movie["rating"], reverse=True)
+    top_list = [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
+
+    return top_list
+
+
+
+
