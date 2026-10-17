@@ -35,10 +35,12 @@ def average_rating(movies):
 
 def catalog_age_stats(movies, current_year=2026):
     """Возвращает кортеж (самый старый фильм в годах, самый новый фильм в годах, среднее) """
+
     oldest = ''
     the_most_new = ''
     oldest_year = 2999
     the_most_new_year = 0
+
     for movie in  movies:
         if movie["year"] < oldest_year:
             oldest = movie["title"] 
@@ -56,8 +58,31 @@ def duration_in_hours(minutes):
     houres = minutes // 60
     mins = minutes % 60 
     return f"{houres}ч {mins}м"
+
+def rating_tier(rating):
+
+    '''По оценке возвращает категорию'''
+
+    if rating >= 9:
+        mark = "шедевр"
+    elif 7 <= rating <= 8.9:
+        mark = "хорошо"
+    else:
+        mark = "средне" if 5 <= rating <= 6.9 else "слабо"
+
+    return mark
+
+def decade_label(year):
+    '''Классифицирцет фильмы по времени'''
+    match year:
+        case _ if year >= 2020:
+            return "новые"
+        case _ if year >= 2015 &  year < 2020:
+            return "недавние"
+        case _ if year < 2015:
+            return "старые"
+
+
     
 
-print(average_rating(movies))
-print(catalog_age_stats(movies))
-print(duration_in_hours(movies[9]["duration_min"]))
+        
