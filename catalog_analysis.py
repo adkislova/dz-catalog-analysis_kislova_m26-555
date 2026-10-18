@@ -169,6 +169,25 @@ def actor_filmography(movies):
 title_rating = [{m["title"]: m["rating"]} for m in movies if m["rating"] > average_rating(movies)]
 
 
+def all_genres(movies):
+    '''Возвращает множество всех уникальных жанров'''
+
+    set_genres = set()
+    for movie in movies:
+        set_genres = set_genres | movie["genres"]
+    return set_genres
+
+
+def common_actors(movie1, movie2):
+    '''Возвращает множество актеров, снимавшихся в обоих фильмах'''
+
+    return set(movie1["actors"] ) & set(movie2["actors"] )
+
+
+def genres_only_in_one(movies_a, movies_b):
+    '''Возвращает жанры, встречающиеся в movies_a, но не встречающиеся в movies_b'''
+
+    return set(movies_a["actors"] ) - set(movies_b["actors"] )
 
 
 
