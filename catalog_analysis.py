@@ -98,22 +98,19 @@ def average_rating(movies):
 def catalog_age_stats(movies, current_year=2026):
     """Возвращает кортеж (самый старый фильм, самый новый фильм, среднее) """
 
-    oldest = ''
-    the_most_new = ''
-    oldest_year = 2999
-    the_most_new_year = 0
+    oldest_age = 0
+    erliest_age = 100
 
     for movie in movies:
-        if movie["year"] < oldest_year:
-            oldest = movie["title"] 
-            oldest_year = movie["year"]
-        if movie["year"] > the_most_new_year:
-            the_most_new = movie["title"]
-            the_most_new_year = movie["year"]
+        age = current_year - movie["year"]
+        if age > oldest_age:
+            oldest_age = age
+        elif age < erliest_age:
+            erliest_age = age
     
     sum_year = sum((current_year - movie["year"])for movie in movies) 
 
-    return (oldest, the_most_new, math.ceil(sum_year / len(movies)))
+    return (oldest_age, erliest_age, math.ceil(sum_year / len(movies)))
 
 
 def duration_in_hours(minutes):
@@ -143,26 +140,28 @@ def decade_label(year):
     match year:
         case _ if year >= 2020:
             return "новые"
-        case _ if year >= 2015 & year < 2020:
+        case _ if 2015 <= year < 2020:
             return "недавние"
         case _ if year < 2015:
             return "старые"
 
 
-for movie in movies:
-    if "comedy" in movie['genres']:
-        continue
-    else:
-        print(f"Комедия - {movie['title']}")
+def cycles(movies):
+    '''Циклы for и while'''
 
-i = 0
-while i < len(movies):
-    if movies[i]['rating'] > 9.0:
-        print(f"\nШедевр - {movies[i]['title']}")
-        break
-    i += 1
-else:
-    print("\nШедевров не найдено")
+    for movie in movies:
+        if "comedy" in movie['genres']:
+            continue
+        print({movie['title']})
+
+    i = 0
+    while i < len(movies):
+        if movies[i]['rating'] > 9.0:
+            print({movies[i]['title']})
+            break
+        i += 1
+    else:
+        print("\nШедевров не найдено")
     
     
 def count_long_movies(movies, threshold=120):
@@ -242,8 +241,13 @@ def actor_filmography(movies):
     return dict_actors
 
 
-avg_rate = average_rating(movies)
-title_rating = [{m["title"]: m["rating"]} for m in movies if m["rating"] > avg_rate]
+def gen_dict(movies):
+    '''Создает словарь с помощью dict comprehension'''
+
+    avg_rate = average_rating(movies)
+    title_rating = [{m["title"]: m["rating"]} for m in movies if m["rating"] > avg_rate]
+
+    return title_rating
 
 
 def all_genres(movies):
@@ -264,7 +268,7 @@ def common_actors(movie1, movie2):
 def genres_only_in_one(movies_a, movies_b):
     '''Возвращает жанры, встречающиеся в movies_a, но не встречающиеся в movies_b'''
 
-    return set(movies_a["actors"]) - set(movies_b["actors"])
+    return set(movies_a["genres"]) - set(movies_b["genres"])
 
 
 def iter_high_rated(movies, min_rating=8.0):
@@ -287,7 +291,6 @@ sum_duration = sum(m["duration_min"] for m in movies if m["rating"] > 7)
 
 def build_report(movies):
     """Итоговый отчет"""
-    print("\nОТЧЕТ ПО КАТАЛОГУ")
     print(f"Средний рейтинг: {average_rating(movies)}")
     avg_age = catalog_age_stats(movies, current_year=2026)[2]
     print(f"Средний возраст фильмов: {avg_age} лет\n")
@@ -310,7 +313,7 @@ def build_report(movies):
     for key, value in sorted_genres:
         print(f"  {key} - {value}")
 
-    print(f"\nВсе жанры каталога: {", ".join(sorted(all_genres(movies)))}")
+    print(f"\nВсе жанры каталога: {', '.join(sorted(all_genres(movies)))}")
 
 
 if __name__ == "__main__":
