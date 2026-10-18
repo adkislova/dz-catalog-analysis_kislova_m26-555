@@ -28,4 +28,5 @@ exclude = ["venv", ".venv", "dist", "__pycache__"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+preview = true
 ignore = [] 
