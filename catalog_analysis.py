@@ -146,5 +146,31 @@ def top_n_by_rating(movies, n=3):
     return top_list
 
 
+def count_by_genre(movies):
+    '''Возвращает словарь {жанр: количество фильмов}'''
+
+    dict_genres = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            dict_genres[genre] = dict_genres.get(genre, 0) + 1
+    return dict_genres
+
+    
+def actor_filmography(movies):
+    '''Возвращает словарь {актер: [список названий фильмов]}'''
+
+    dict_actors = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            dict_actors[actor] = dict_actors.get(actor, []) + [movie["title"]]
+    return dict_actors
+
+
+title_rating = [{m["title"]: m["rating"]} for m in movies if m["rating"] > average_rating(movies)]
+
+
+
+
+
 
 
